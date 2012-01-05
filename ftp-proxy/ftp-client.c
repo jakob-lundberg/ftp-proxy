@@ -403,7 +403,20 @@ void client_run(void)
 					str, sizeof(str)) != NULL)
 				client_srv_ctrl_read(str);
 		}
-
+        
+        /* Restrict amount of data transfered */
+        
+        if ((p = config_str(NULL, "MaxDataTransfer", NULL)) != NULL &&
+             ctx.cli_data != NULL){
+            if (ctx.cli_data->rcnt > atoi(p)){
+                ctx.srv_data->kill = 1;
+                socket_kill(ctx.cli_data);
+                ctx.cli_data = NULL;
+                client_respond(552, NULL,
+                    "Requested file action aborted. Exceeded "
+                    "storage allocation");
+            }
+        }
 		/*
 		** Serve the data connections. This is a bit tricky,
 		** since all we do is move the buffer pointers.
