@@ -672,7 +672,7 @@ static void client_srv_ctrl_read(char *str)
 	if (str == NULL)		/* Basic sanity check	*/
 		return;
 
-	syslog_write(T_DBG, "from Server-PI (%d): '%.512s'",
+	syslog_write(U_INF, "from Server (%d): '%.512s'",
 	             ctx.srv_ctrl->sock, str);
 #if defined(COMPILE_DEBUG)
 	debug(1, "from Server-PI (%d): '%.512s'",
