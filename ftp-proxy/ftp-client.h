@@ -89,6 +89,10 @@
 #define UAUTH_MAU	2	/* Magic auth mode auth%user	*/
 #define UAUTH_MUA	3	/* Magic auth mode user%auth	*/
 
+#define STOR_NONE   0   /* Have not yet sent STOR */
+#define STOR_SENT   1   /* Have sent STOR */
+#define STOR_RECV   2   /* Have recived error */
+
 typedef struct {
 	HLS *cli_ctrl;		/* Control path to the client	*/
 	HLS *cli_data;		/* Data path to the client	*/
@@ -137,6 +141,8 @@ typedef struct {
 	size_t xfer_rsec;	/* secs, read transfers		*/
 	size_t xfer_wcnt;	/* bytes, write transfers	*/
 	size_t xfer_wsec;	/* secs, write transfers	*/
+
+    int stor_fix_status /* Status of STOR fix */
 } CONTEXT;
 
 

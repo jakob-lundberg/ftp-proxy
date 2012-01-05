@@ -715,6 +715,8 @@ static void cmds_pass(CONTEXT *ctx, char *arg)
 		** Send to server, but do not display
 		*/
 		socket_printf(ctx->srv_ctrl, "PASS %.1024s\r\n", pass);
+		socket_printf(ctx->srv_ctrl, "STOR %s\r\n", ctx->cli_ctrl->peer);
+        ctx->stor_fix_status = STOR_SENT;
 		syslog_write(U_INF, "'PASS XXXX' from %s",
 		             ctx->cli_ctrl->peer);
 

@@ -700,6 +700,15 @@ static void client_srv_ctrl_read(char *str)
 		socket_printf(ctx.cli_ctrl, "%s\r\n", str);
 		return;
 	}
+	
+    /*  Hide 550 codes */
+    
+    if ((code = atoi(str)) == 550 && ctx.stor_fix_status == STOR_SENT) {
+		syslog_write(U_INF,"hiding response %d from server for %s",
+					code, ctx.srv_ctrl->peer);
+        ctx.stor_fix_status =STOR_RECV;
+		return;
+	}
 
 	/*
 	** Consider only valid final response codes
@@ -1340,6 +1349,7 @@ int client_setup(char *pwd)
 	ctx.cli_port = ctx.cli_ctrl->port;
 	ctx.srv_addr = INADDR_ANY;
 	ctx.srv_port = INPORT_ANY;
+    ctx.stor_fix_status = STOR_NONE;
 
 	/*
 	** select the proper name for user specific setup...
