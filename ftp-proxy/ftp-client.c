@@ -200,13 +200,14 @@ void client_run(void)
 	/*
 	** Announce the connection request
 	*/
-	syslog_write(U_INF, "connect from %s", ctx.cli_ctrl->peer);
+	syslog_write(U_INF, "connect from %s to %s", ctx.cli_ctrl->peer,
+                 config_str(NULL, "DestinationAddress", NULL) );
 
 	/*
 	** Display the welcome message (invite the user to login)
 	*/
 	if ((p = config_str(NULL, "WelcomeString", NULL)) == NULL)
-		p = "%h FTP server (Version %v - %b) ready";
+		p = "%h FTP server ready";
 	misc_strncpy(str, socket_msgline(p), sizeof(str));
 	client_respond(220,
 		config_str(NULL, "WelcomeMessage", NULL), str);
