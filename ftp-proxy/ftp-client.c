@@ -850,7 +850,9 @@ static void client_srv_ctrl_read(char *str)
 			break;
 
 		case EXP_IDLE:
-			socket_printf(ctx.cli_ctrl, "%s\r\n", str);
+            if (code != 227){ /*  Don't send bogus 227 to the client */                      
+                socket_printf(ctx.cli_ctrl, "%s\r\n", str);                                 
+            }  
 			if (code == 421) {
 				syslog_write(T_WRN,
 					"server closed connection "
